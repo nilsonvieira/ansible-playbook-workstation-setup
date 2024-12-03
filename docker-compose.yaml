@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  ansible:
+    build: .
+    volumes:
+      - .:/workspace
+      - ${HOME}/.ssh:/root/.ssh:ro
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=False

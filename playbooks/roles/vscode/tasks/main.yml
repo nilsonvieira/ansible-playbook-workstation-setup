@@ -1,0 +1,37 @@
+---
+- name: Check and remove conflicting VS Code keys and sources
+  block:
+    - name: Remove old Microsoft GPG keys
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/keyrings/packages.microsoft.gpg
+        - /etc/apt/keyrings/microsoft.asc
+      
+    - name: Remove old VS Code repository file
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/vscode.list
+        state: absent
+  become: true
+
+- name: Install VS Code Repository and Key
+  block:
+    - name: Create keyrings directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Microsoft GPG key
+      ansible.builtin.get_url:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        dest: /etc/apt/keyrings/microsoft.asc
+        mode: '0644'
+
+    - name: Add VS Code repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.asc] https://packages.microsoft.com/repos/code stable main
+        state: present
+        filename: vscode
+  become: true

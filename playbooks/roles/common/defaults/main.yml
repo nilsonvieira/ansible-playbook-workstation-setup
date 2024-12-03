@@ -1,0 +1,26 @@
+---
+common_packages:
+  - vim
+  - curl
+  - wget
+  - remmina
+  - zenity
+  - flameshot
+  - alacarte
+  - htop
+  - btop
+  - nmap
+  - wireguard
+  - resolvconf
+
+system_dirs:
+  - bin
+  - Downloads
+
+packages_by_distro:
+  popos:
+    additional_packages: []
+  mint:
+    additional_packages: []
+  ubuntu:
+    additional_packages: []

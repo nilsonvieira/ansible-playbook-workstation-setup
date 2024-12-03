@@ -1,0 +1,70 @@
+---
+- name: Remove APT locks
+  block:
+    - name: Check running apt processes
+      shell: "ps aux | grep -i apt | grep -v grep || true"
+      register: apt_processes
+      
+    - name: Kill apt processes if running
+      shell: "pkill -9 apt || true"
+      when: apt_processes.stdout != ""
+      
+    - name: Remove lock files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/apt/lists/lock
+        - /var/cache/apt/archives/lock
+        - /var/lib/dpkg/lock
+        - /var/lib/dpkg/lock-frontend
+    - name: Wait for locks to be released
+      wait_for:
+        path: "{{ item }}"
+        state: absent
+        timeout: 30
+      loop:
+        - /var/lib/apt/lists/lock
+        - /var/cache/apt/archives/lock
+        - /var/lib/dpkg/lock
+        - /var/lib/dpkg/lock-frontend
+
+  become: true
+  ignore_errors: true
+
+- name: Check and remove conflicting package sources
+  block:
+    - name: Remove old GPG keys
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/keyrings/packages.microsoft.gpg
+        - /etc/apt/keyrings/microsoft.asc
+        
+    - name: Remove old repository files
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/{{ item }}
+        state: absent
+      loop:
+        - vscode.list
+        - insomnia.list
+        - hashicorp.list
+  become: true
+
+- name: UPDATE PACKS
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+  become: true
+
+- name: Update package cache
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+
+- name: Install common packages
+  ansible.builtin.package:
+    name: "{{ common_packages }}"
+    state: present
+  become: true

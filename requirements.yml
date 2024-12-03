@@ -1,0 +1,20 @@
+---
+roles:
+  - name: vscode
+    src: https://github.com/nilsonvieira/ansible-role-vscode
+    version: main
+  - name: hashicorp
+    src: https://github.com/nilsonvieira/ansible-role-hashicorp
+    version: main
+  - name: 1password
+    src: https://github.com/nilsonvieira/ansible-role-1password
+    version: main
+  - name: k8s
+    src: https://github.com/nilsonvieira/ansible-role-k8s
+    version: main
+  - name: apiclient
+    src: https://github.com/nilsonvieira/ansible-role-apiclient
+    version: main
+  - name: browsers
+    src: https://github.com/nilsonvieira/ansible-role-browsers
+    version: main
