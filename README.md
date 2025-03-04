@@ -33,6 +33,14 @@ docker run -it --rm --network host \
   -v "$(pwd):/workspace" \
   ansible-workstation -i inventory/hosts.yml playbooks/site.yml --ask-pass --ask-become-pass
 ```
+#### Example for Funcional Command
+```bash
+docker run -it --rm --network host \
+  -v "${HOME}/.ssh:/root/.ssh:ro" \
+  -v "$(pwd):/workspace" \
+  ansible-workstation -i inventory/hosts.yml playbooks/site.yml --ask-pass --ask-become-pass \
+  -u nilson
+```
 
 ### Local Installation
 
