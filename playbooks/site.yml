@@ -29,4 +29,6 @@
   roles:
     - common
     - system
-    - workstation
+    - vscode
+    # - workstation
+    - devops
