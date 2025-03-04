@@ -1,11 +1,11 @@
----
-- name: Set up workstation environment
-  ansible.builtin.include_role:
-    name: "{{ item }}"
-  loop:
-    - vscode
-    - k8s
-    - browsers
+# ---
+# - name: Set up workstation environment
+#   ansible.builtin.include_role:
+#     name: "{{ item }}"
+#   loop:
+    # - vscode
+    # - k8s
+    # - browsers
     # - apiclient
     # - hashicorp
     # - 1password
